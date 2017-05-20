@@ -1,5 +1,5 @@
 build:
-	idris forth.idr -o foid
+	idris foid.idr -o foid
 .PHONY: build 
 
 clean:
