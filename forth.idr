@@ -17,10 +17,10 @@ total
 rPush : Integer -> StackOp height (S height)
 rPush x = \stk => x :: stk
 
---total
---run : Vect h1 Integer -> List (StackOp h1 h2) -> Vect h2 Integer
---run [] _ = []
---run stk (op :: ops)  = run (op stk) ops
+total
+run : Vect (S (S h1)) Integer -> StackOp (S (S h1)) (S h2) -> Vect (S h2) Integer
+run stk op  = op stk
 
+-- First test will be 5 6 + 7 * + *
 main : IO()
---main = putStrLn $ stackResult $ runStack [] (do Push 5; Push 6; rAdd; Push 7; Push 8; rAdd; rMul; rDot)
+main = putStrLn $ show $ run [1,2] rAdd
