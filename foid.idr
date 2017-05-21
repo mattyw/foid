@@ -39,11 +39,20 @@ parse [] = []
 parse ("*" :: xs) = MulCmd :: parse xs
 parse ("+" :: xs) = AddCmd :: parse xs
 parse (n :: xs)  = Number (cast n) :: parse xs
+-- TODO a failed parse just returns 0
 
 runParse : String -> List Command
 runParse = parse . words
 
+evalStack : IO()
+evalStack = do putStr "> "
+               input <- getLine
+               if input == ":q"
+                  then putStrLn "bye!"
+                  else evalStack
+
 -- First test will be 5 6 + 7 8 + *
 main : IO()
-main = putStrLn $ show $ run [] (do Push 5; Push 6; Add; Push 7; Push 8; Add; Mul)
+--main = putStrLn $ show $ run [] (do Push 5; Push 6; Add; Push 7; Push 8; Add; Mul)
+main = evalStack
 --
