@@ -25,6 +25,24 @@ run stk (cmd >>= next) =
   let (result, newStk) = run stk cmd in
       run newStk (next result)
 
+--main : IO()
+--main = putStrLn $ show $ run [] (do Push 5; Push 6; Add; Push 7; Push 8; Add; Mul)
+
+-- Now we try to turn strings into StackOps
+
+data Command = Number Integer
+             | AddCmd
+             | MulCmd
+
+parse : List String -> List Command
+parse [] = []
+parse ("*" :: xs) = MulCmd :: parse xs
+parse ("+" :: xs) = AddCmd :: parse xs
+parse (n :: xs)  = Number (cast n) :: parse xs
+
+runParse : String -> List Command
+runParse = parse . words
+
 -- First test will be 5 6 + 7 8 + *
 main : IO()
 main = putStrLn $ show $ run [] (do Push 5; Push 6; Add; Push 7; Push 8; Add; Mul)
