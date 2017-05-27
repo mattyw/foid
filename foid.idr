@@ -21,6 +21,10 @@ total
 run : Vect (S (S h1)) Integer -> StackOp (S (S h1)) (S h2) -> Vect (S h2) Integer
 run stk op  = op stk
 
+runTwo : Vect height1 Integer -> StackOp height1 height2 -> StackOp height2 height3 -> Vect height3 Integer
+runTwo stk op1 op2 = op stk where 
+  op = op2 . op1
+
 -- First test will be 5 6 + 7 * + *
 main : IO()
-main = putStrLn $ show $ run [1,2] rAdd
+main = putStrLn $ show $ runTwo [5,6] rAdd (rPush 7)
