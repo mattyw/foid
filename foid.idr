@@ -5,6 +5,9 @@ import Data.Vect
 StackOp : Nat -> Nat -> Type
 StackOp h1 h2 = Vect h1 Integer -> Vect h2 Integer
 
+StackOps : StackOp h1 h2 -> StackOp h2 h3 -> StackOp h1 h3 
+StackOps op1 op2 = op2 . op1
+
 total
 rAdd : StackOp (S (S height)) (S height)
 rAdd (x :: y :: xs) = x + y :: xs
@@ -25,6 +28,13 @@ runTwo : Vect height1 Integer -> StackOp height1 height2 -> StackOp height2 heig
 runTwo stk op1 op2 = op stk where 
   op = op2 . op1
 
--- First test will be 5 6 + 7 * + *
+-- First test will be 5 6 + 7 8 + *
 main : IO()
-main = putStrLn $ show $ runTwo [5,6] rAdd (rPush 7)
+main = putStrLn $ show $ run [5,6] 
+    (StackOps 
+      (StackOps 
+        (StackOps 
+          (StackOps rAdd (rPush 7)) 
+        (rPush 8)) 
+      rAdd) 
+    rMul) 
